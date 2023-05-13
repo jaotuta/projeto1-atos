@@ -8,9 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Repository {
-	 public String url_db = "jdbc:mysql://localhost:3306/projeto1";
-	 public String user_db = "root";
-	 public String password_db = "";
+	 public String url_db = "jdbc:mysql://sql10.freesqldatabase.com:3306/sql10616959";
+	 public String user_db = "sql10616959";
+	 public String password_db = "er6ZNSDEUM";
 	 
 	    public Repository() throws IOException {
 	    }

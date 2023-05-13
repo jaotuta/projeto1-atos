@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Models.Produto;
 import Services.Services;
 
 
@@ -26,6 +27,8 @@ public class Controller extends HttpServlet {
     }
 	
 
+
+
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
         String method = request.getMethod();
@@ -36,12 +39,33 @@ public class Controller extends HttpServlet {
             doPost(request, response);
         }
         if(method.equals("DELETE")) {
-            //doDelete(request, response);
+            doDelete(request, response);
         }
         if(method.equals("PUT")) {
             //doPut(request, response);
         }
 	}
+
+	@Override
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		int id =  Integer.parseInt(request.getParameter("id")) ;
+		System.out.println(request.getParameter("id"));
+		try {
+			service.excluirProduto(id);
+			response.setStatus(400, "deletado");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	}
+
+
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -52,14 +76,9 @@ public class Controller extends HttpServlet {
 		}
 		
 		if (path.equals("/home")) {
-			try {
-				System.out.println(service.buscarTodosProduto());
-				request.setAttribute("listaProdutos", service.buscarTodosProduto());
+
 				RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 				rd.forward(request, response);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 
 		}
 		
@@ -69,17 +88,53 @@ public class Controller extends HttpServlet {
 			System.out.println("Teste GET /novoproduto");			
 		}
 		if (path.equals("/produtos")) {
-			System.out.println("Teste GET /produtos");			
+			try {
+				request.setAttribute("listaProdutos", service.buscarTodosProduto());
+				RequestDispatcher rd = request.getRequestDispatcher("produtos.jsp");
+				rd.forward(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
 		}
 		if (path.equals("/alterarproduto")) {
+			System.out.println(request.getParameter("id"));
+			try {
+				Produto produto = service.buscarProduto(request.getParameter("id"));
+				request.setAttribute("produto", produto);
+				RequestDispatcher rd = request.getRequestDispatcher("editar-produto.jsp");
+				rd.forward(request, response);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			System.out.println("Teste GET /alterarproduto");			
 		}
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//service.novoProduto("1524632597512", "Iphone 13 Pro - Gray 128gb", "Telefonia", 5699.90f, 25);
-		super.doPost(request, response);
+		System.out.println("entrouuuuuuu");
+	 	String codigo = request.getParameter("codigo");
+	 	String nome = request.getParameter("nome");
+	 	String categoria = request.getParameter("categoria");
+		float valor = Float.parseFloat(request.getParameter("valor"));
+		int quantidade = Integer.parseInt(request.getParameter("quantidade")) ;
+		try {
+			service.novoProduto(codigo, nome, categoria, valor, quantidade);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			request.setAttribute("listaProdutos", service.buscarTodosProduto());
+			RequestDispatcher rd = request.getRequestDispatcher("produtos.jsp");
+			rd.forward(request, response);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 

@@ -38,22 +38,20 @@ public class Services {
         return listaProdutos;
     }
 
-    public List<Produto> buscarProduto(String nome) throws SQLException {
-    	List<Produto> listaProdutos = new ArrayList<Produto>();
-        final String db_query = "SELECT * FROM produto WHERE nome LIKE '%"+nome+"%'";
+    public Produto buscarProduto(String id) throws SQLException {
+    	Produto produto = new Produto();
+        final String db_query = "SELECT * FROM produto WHERE id ="+id ;
         ResultSet resultSet = this.repository.consultar(db_query);
         while (resultSet.next()) {
-        	Produto produto = new Produto();
         	produto.setId(resultSet.getInt("id"));
         	produto.setCodigo(resultSet.getString("codigo"));
         	produto.setNome(resultSet.getString("nome"));
         	produto.setCategoria(resultSet.getString("categoria"));
         	produto.setValor(resultSet.getFloat("valor"));
         	produto.setQuantidade(resultSet.getInt("quantidade"));
-        	listaProdutos.add(produto);
 
         }
-        return listaProdutos;
+        return produto;
     }
 
     public void novoProduto(String codigo, String nome, String categoria, float valor, int quantidade) throws SQLException {

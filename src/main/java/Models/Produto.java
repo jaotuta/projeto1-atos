@@ -1,6 +1,7 @@
 package Models;
 
 import java.math.BigInteger;
+import java.text.NumberFormat;
 
 public class Produto {
 	private int id;
@@ -51,8 +52,9 @@ public class Produto {
 		this.categoria = categoria;
 	}
 
-	public float getValor() {
-		return valor;
+	public String getValor() {
+		
+		return NumberFormat.getCurrencyInstance().format(this.valor);
 	}
 
 	public void setValor(float valor) {
