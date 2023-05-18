@@ -56,7 +56,10 @@ public class Produto {
 		
 		return NumberFormat.getCurrencyInstance().format(this.valor);
 	}
-
+	public Float getValorEdicao() {
+		
+		return this.valor;
+	}
 	public void setValor(float valor) {
 		this.valor = valor;
 	}

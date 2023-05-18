@@ -33,17 +33,25 @@ public class Controller extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
         String method = request.getMethod();
         if(method.equals("GET")) {
+        	System.out.println("teeeeeeste 1");
             doGet(request, response);
         }
         if(method.equals("POST")) {
-            doPost(request, response);
+        	String path = request.getServletPath();
+        	
+    		if (path.equals("/novoproduto")) {
+    			doPost(request, response);
+    		}
+    		if (path.equals("/alterarproduto")) {
+    			doPut(request, response);
+    		}
+            
         }
         if(method.equals("DELETE")) {
+        	System.out.println("teeeeeeste 3");
             doDelete(request, response);
         }
-        if(method.equals("PUT")) {
-            //doPut(request, response);
-        }
+
 	}
 
 	@Override
@@ -62,7 +70,25 @@ public class Controller extends HttpServlet {
 
 	@Override
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		int id = Integer.parseInt(request.getParameter("id"));
+		String codigo = request.getParameter("codigo");
+	 	String nome = request.getParameter("nome");
+	 	String categoria = request.getParameter("categoria");
+		float valor = Float.parseFloat(request.getParameter("valor"));
+		int quantidade = Integer.parseInt(request.getParameter("quantidade")) ;
+		try {
+			service.attProduto(id, codigo, nome, categoria, valor, quantidade);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			request.setAttribute("listaProdutos", service.buscarTodosProduto());
+			RequestDispatcher rd = request.getRequestDispatcher("produtos.jsp");
+			rd.forward(request, response);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 
@@ -115,7 +141,6 @@ public class Controller extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("entrouuuuuuu");
 	 	String codigo = request.getParameter("codigo");
 	 	String nome = request.getParameter("nome");
 	 	String categoria = request.getParameter("categoria");

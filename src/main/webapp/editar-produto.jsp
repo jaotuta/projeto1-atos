@@ -38,10 +38,10 @@
 			<div class="dados-produtos">
 				<h1>Atualizar Produto</h1>
 			
-				<form action="alterarproduto" method="put">
+				<form action="alterarproduto" method="post">
 					<fieldset>
 						
-
+						<input type="hidden" name="id" value="<%=produto.getId() %>" />	
 						<div class="codbar">
 						<p><label for="codigo">Codebar:</label>
 						<input type="text" id="codigo" name="codigo" value="<%=produto.getCodigo() %>"></p>
@@ -52,13 +52,13 @@
 						<input type="textarea" id="nome" size="50" name="nome" value="<%=produto.getNome() %>"></p>
 
 						<p><label for="categoria">Categoria:</label>
-						<input type="text" id="categoria" name="categoria"></p>
+						<input type="text" id="categoria" name="categoria" value="<%=produto.getCategoria() %>"></p>
 						
 						<p><label for="valor">Valor:</label>
-						<input type="text" id="valor" name="valor"></p>
+						<input type="text" id="valor" name="valor" value="<%=produto.getValorEdicao() %>"></p>
 
 						<p><label for="quantidade">Quantidade:</label>
-							<input type="number" id="quantidade" name="quantidade"></p>
+							<input type="number" id="quantidade" name="quantidade" value="<%=produto.getQuantidade() %>"></p>
 
 						<div>
 							<p class="botoes" ><input type="submit" value="Atualizar produto">
